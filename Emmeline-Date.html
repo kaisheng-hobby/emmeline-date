@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kai Sheng ❤️ Emmeline</title>
+
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: radial-gradient(circle at top, #ffe6f2, #ffd1e6 45%, #fff0f7);
+    min-height: 100vh;
+    overflow: hidden;
+    text-align: center;
+    color: #5c2a3d;
+  }
+
+  .page {
+    display: none;
+    min-height: 100vh;
+    padding: 32px 20px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .active { display: flex; }
+
+  .card {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(14px);
+    padding: 44px 38px;
+    border-radius: 42px;
+    box-shadow: 0 18px 55px rgba(255, 105, 166, 0.32);
+    max-width: 760px;
+    width: 92%;
+  }
+
+  .big-card {
+    max-width: 900px;
+    min-height: 560px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  h1 {
+    font-size: 48px;
+    margin: 0 0 18px;
+  }
+
+  h2 {
+    font-size: 34px;
+    margin: 18px 0;
+  }
+
+  p {
+    font-size: 23px;
+    line-height: 1.7;
+  }
+
+  .small {
+    font-size: 18px;
+    opacity: 0.85;
+  }
+
+  button, input {
+    border: none;
+    border-radius: 34px;
+    padding: 18px 34px;
+    margin: 12px;
+    font-size: 22px;
+  }
+
+  button {
+    background: #ff5fa2;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(255, 105, 166, 0.45);
+    transition: transform 0.18s, box-shadow 0.18s;
+  }
+
+  button:hover {
+    transform: scale(1.06);
+    box-shadow: 0 10px 28px rgba(255, 105, 166, 0.55);
+  }
+
+  input {
+    background: white;
+    color: #5c2a3d;
+    max-width: 90%;
+  }
+
+  .button-playground {
+    position: relative;
+    width: 100%;
+    height: 230px;
+    margin-top: 28px;
+  }
+
+  #yesBtn {
+    position: absolute;
+    left: 50%;
+    top: 28px;
+    transform: translateX(-50%);
+  }
+
+  #yesBtn:hover {
+    transform: translateX(-50%) scale(1.06);
+  }
+
+  #noBtn {
+    position: absolute;
+    left: calc(50% - 58px);
+    top: 125px;
+    background: #999;
+    min-width: 150px;
+    z-index: 5;
+    transition: left 0.18s ease, top 0.18s ease, transform 0.18s ease;
+  }
+
+  #achievement {
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+    transform: translateX(-50%);
+    background: #fff;
+    color: #5c2a3d;
+    border-radius: 22px;
+    padding: 12px 20px;
+    font-size: 17px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+    display: none;
+    width: max-content;
+    max-width: 90%;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(170px, 210px));
+    gap: 18px;
+    margin-top: 22px;
+    justify-content: center;
+  }
+
+  .choice, .food, .activity {
+    background: white;
+    border-radius: 26px;
+    padding: 22px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    cursor: pointer;
+    font-size: 22px;
+    transition: 0.2s;
+  }
+
+  .choice:hover, .food:hover, .activity:hover { transform: scale(1.05); }
+
+  .selected {
+    background: #ff5fa2 !important;
+    color: white !important;
+    transform: scale(1.07);
+  }
+
+  .quiz-option {
+    display: block;
+    background: white;
+    color: #5c2a3d;
+    margin: 14px auto;
+    max-width: 400px;
+  }
+
+  .letter {
+    background: white;
+    color: #5c2a3d;
+    padding: 34px;
+    border-radius: 30px;
+    max-width: 720px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    text-align: left;
+    line-height: 1.9;
+    font-size: 22px;
+  }
+
+  .heart {
+    position: fixed;
+    animation: float 4s linear infinite;
+    color: #ff4f9a;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  @keyframes float {
+    from { transform: translateY(100vh); opacity: 1; }
+    to { transform: translateY(-10vh); opacity: 0; }
+  }
+
+  @media (max-width: 650px) {
+    body { overflow-y: auto; }
+    .page { min-height: 100dvh; padding: 24px 14px; }
+    .card { padding: 28px 20px; border-radius: 30px; width: 94%; }
+    .big-card { min-height: 520px; }
+    h1 { font-size: 34px; }
+    h2 { font-size: 25px; }
+    p { font-size: 18px; }
+    .small { font-size: 15px; }
+    button, input { font-size: 17px; padding: 14px 22px; }
+    .button-playground { height: 230px; }
+    #noBtn { min-width: 125px; }
+    .grid { grid-template-columns: repeat(2, minmax(130px, 1fr)); gap: 12px; }
+    .choice, .food, .activity { font-size: 16px; padding: 16px 10px; }
+    .letter { font-size: 17px; padding: 24px; }
+  }
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_8f15f7f1b3.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+</audio>
+
+<div class="page active" id="page1">
+  <div class="card">
+    <h1>A Special Invitation</h1>
+    <h2>For Emmeline ❤️</h2>
+    <p>
+      This website was made with unreasonable amounts of effort,<br>
+      questionable coding decisions,<br>
+      and a ridiculous amount of affection.
+    </p>
+    <button onclick="playMusic()">Play Some Cute Music 🎵</button>
+    <button onclick="goPage(2)">Open Invitation ❤️</button>
+  </div>
+</div>
+
+<div class="page" id="page2">
+  <div class="card big-card" id="dateCard">
+    <h1>Hi Emmeline ❤️</h1>
+    <h2>Will you go on a date with me?</h2>
+    <p class="small">Friendly reminder: there is only one correct answer.</p>
+
+    <div class="button-playground" id="playground">
+      <button id="yesBtn" onclick="goPage(3)">Yes 🥰</button>
+      <button id="noBtn">No</button>
+      <div id="achievement"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page3">
+  <div class="card">
+    <h1>I knew it 😌</h1>
+    <p>
+      You did not just press a button.<br>
+      You officially activated<br>
+      Kai Sheng's happiness mode.
+    </p>
+    <button onclick="goPage(4)">Continue ❤️</button>
+  </div>
+</div>
+
+<div class="page" id="page4">
+  <div class="card">
+    <h1>Before We Continue...</h1>
+    <p>
+      I do not know if you realize this,<br>
+      but every time I see your name<br>
+      pop up on my phone,<br>
+      my day gets a little better.
+    </p>
+    <button onclick="goPage(5)">Awww 🥺</button>
+  </div>
+</div>
+
+<div class="page" id="page5">
+  <div class="card">
+    <h1>When can I borrow you for a little while? ✨</h1>
+    <p>Pick a day and time you are willing to spend with me.</p>
+
+    <input type="date" id="date">
+    <input type="time" id="time">
+
+    <p class="small">I may or may not start counting down immediately.</p>
+
+    <button onclick="goPage(6)">Next ❤️</button>
+  </div>
+</div>
+
+<div class="page" id="page6">
+  <div class="card">
+    <h1>Fun Fact</h1>
+    <p>
+      The moment you choose a date,<br>
+      someone starts looking forward to it<br>
+      like a very unserious little kid.
+    </p>
+    <button onclick="goPage(7)">Choose Food 🍽️</button>
+  </div>
+</div>
+
+<div class="page" id="page7">
+  <div class="card">
+    <h1>One Very Important Question...</h1>
+    <p>
+      What kind of food<br>
+      would make you happiest? ❤️
+    </p>
+
+    <div class="grid">
+      <div class="food">🍕 Pizza</div>
+      <div class="food">🍣 Sushi</div>
+      <div class="food">🍔 Burger</div>
+      <div class="food">🍝 Pasta</div>
+      <div class="food">🍜 Ramen</div>
+      <div class="food">🥟 Chinese Food</div>
+      <div class="food">🌮 Mexican</div>
+      <div class="food">🥩 Western Food</div>
+      <div class="food">🍰 Dessert Date</div>
+      <div class="food">☕ Cafe Date</div>
+      <div class="food">🍲 Hotpot</div>
+      <div class="food">✨ Something Else</div>
+    </div>
+
+    <input
+      type="text"
+      id="customFood"
+      placeholder="Tell me what you feel like eating ❤️"
+      style="display:none; width:85%; margin-top:20px; text-align:center;"
+    >
+
+    <button onclick="goPage(8)">I Picked One 💕</button>
+  </div>
+</div>
+
+<div class="page" id="page8">
+  <div class="card">
+    <h1>What should we do after eating?</h1>
+    <p>Choose one, or let me surprise you.</p>
+
+    <div class="grid">
+      <div class="activity">☕ Cafe</div>
+      <div class="activity">🎬 Movie</div>
+      <div class="activity">🎳 Bowling</div>
+      <div class="activity">🌃 Night Walk</div>
+      <div class="activity">📸 Take Photos</div>
+      <div class="activity">🎡 Surprise Me</div>
+    </div>
+
+    <button onclick="goPage(9)">Continue 💌</button>
+  </div>
+</div>
+
+<div class="page" id="page9">
+  <div class="card">
+    <h1>Quick Question</h1>
+    <p>Who is the cutest person here?</p>
+
+    <button class="quiz-option" onclick="quizAnswer()">Kai Sheng</button>
+    <button class="quiz-option" onclick="quizAnswer()">Emmeline</button>
+    <button class="quiz-option" onclick="quizAnswer()">Both</button>
+
+    <p id="quizResult"></p>
+
+    <button onclick="goPage(10)">Continue 💌</button>
+  </div>
+</div>
+
+<div class="page" id="page10">
+  <div class="card">
+    <h1>Dear Emmeline,</h1>
+    <p>
+      Thank you for saying yes.<br><br>
+      Out of all the people in the world,<br>
+      you are the one I wanted to ask.<br><br>
+      And honestly...<br>
+      I am really glad it is you.
+    </p>
+    <button onclick="showInvitation()">Create Date Invitation ❤️</button>
+  </div>
+</div>
+
+<div class="page" id="page11">
+  <h1>Official Date Invitation 💌</h1>
+
+  <div class="letter" id="invitation"></div>
+
+  <p id="countdown"></p>
+
+  <button onclick="confirmDate()">Confirm Date ❤️</button>
+</div>
+
+<div class="page" id="page12">
+  <div class="card">
+    <h1>Date Confirmed ❤️</h1>
+    <p>
+      Thank you for making someone's day a little brighter.<br><br>
+      Kai Sheng is now officially excited,<br>
+      slightly nervous,<br>
+      and very much looking forward to seeing you.
+    </p>
+    <button onclick="alert('Secret unlocked: He really, really likes spending time with you ❤️')">
+      Secret Button 💌
+    </button>
+  </div>
+</div>
+
+<script>
+  // =====================================================
+  // TELEGRAM SETTINGS
+  // Paste your NEW Bot Token inside the quotes below.
+  // Do NOT share your token with anyone.
+  // =====================================================
+  const BOT_TOKEN = "8847331428:AAE9UiGbwK77YvAF-YMY0mpAVfjAy9FKrV8";
+  const CHAT_ID = "6978523113";
+
+  const noBtn = document.getElementById("noBtn");
+  const playground = document.getElementById("playground");
+  const achievement = document.getElementById("achievement");
+  let noCount = 0;
+  let achievementShown = false;
+
+  const teasingTexts = [
+    "Nice try 😏",
+    "Not today 😂",
+    "Error 404",
+    "Rejection not found",
+    "Choose properly ❤️",
+    "Kai Sheng disagrees",
+    "This feature is disabled",
+    "Wrong answer 😝",
+    "Still trying? 😂",
+    "Support unavailable ❤️"
+  ];
+
+  function playMusic() {
+    document.getElementById("bgMusic").play();
+  }
+
+  function goPage(num) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById("page" + num).classList.add("active");
+
+    if (num === 2) {
+      resetNoButton();
+    }
+  }
+
+  function resetNoButton() {
+    noBtn.style.left = "calc(50% - 58px)";
+    noBtn.style.top = "125px";
+    noBtn.innerText = "No";
+    achievement.style.display = "none";
+  }
+
+  function moveNoButton() {
+    noCount++;
+    noBtn.innerText = teasingTexts[noCount % teasingTexts.length];
+
+    const area = playground.getBoundingClientRect();
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+    const safe = 12;
+
+    const minX = safe;
+    const minY = safe;
+    const maxX = area.width - btnWidth - safe;
+    const maxY = area.height - btnHeight - 54;
+
+    let x = Math.random() * (maxX - minX) + minX;
+    let y = Math.random() * (maxY - minY) + minY;
+
+    const yesBtn = document.getElementById("yesBtn");
+    const yesRect = yesBtn.getBoundingClientRect();
+    const areaRect = playground.getBoundingClientRect();
+    const yesX = yesRect.left - areaRect.left;
+    const yesY = yesRect.top - areaRect.top;
+
+    const tooCloseToYes =
+      Math.abs(x - yesX) < 170 && Math.abs(y - yesY) < 75;
+
+    if (tooCloseToYes) {
+      y = Math.min(maxY, yesY + 105);
+    }
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    if (noCount >= 10 && !achievementShown) {
+      achievementShown = true;
+      achievement.innerHTML = "🏆 Achievement Unlocked: Most Determined Girlfriend";
+      achievement.style.display = "block";
+    }
+  }
+
+  noBtn.addEventListener("mouseenter", moveNoButton);
+  noBtn.addEventListener("click", moveNoButton);
+  noBtn.addEventListener("touchstart", function(e) {
+    e.preventDefault();
+    moveNoButton();
+  });
+
+  let selectedFood = "";
+  let selectedActivity = "";
+
+  document.querySelectorAll(".food").forEach(food => {
+    food.addEventListener("click", () => {
+      document.querySelectorAll(".food").forEach(f => f.classList.remove("selected"));
+      food.classList.add("selected");
+      selectedFood = food.innerText;
+
+      const customFoodInput = document.getElementById("customFood");
+      if (selectedFood === "✨ Something Else") {
+        customFoodInput.style.display = "inline-block";
+        customFoodInput.focus();
+      } else {
+        customFoodInput.style.display = "none";
+        customFoodInput.value = "";
+      }
+    });
+  });
+
+  document.querySelectorAll(".activity").forEach(activity => {
+    activity.addEventListener("click", () => {
+      document.querySelectorAll(".activity").forEach(a => a.classList.remove("selected"));
+      activity.classList.add("selected");
+      selectedActivity = activity.innerText;
+    });
+  });
+
+  function quizAnswer() {
+    document.getElementById("quizResult").innerText = "Correct answer ❤️";
+  }
+
+  function showInvitation() {
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+    const customFood = document.getElementById("customFood").value.trim();
+
+    const displayDate = date || "A day chosen by Emmeline";
+    const displayTime = time || "A time that feels just right";
+    const food = selectedFood === "✨ Something Else"
+      ? (customFood || "Something Emmeline will tell Kai Sheng later ❤️")
+      : (selectedFood || "Whatever Emmeline wants ❤️");
+    const activity = selectedActivity || "Something sweet and not too tiring ❤️";
+
+    document.getElementById("invitation").innerHTML = `
+      <strong>Kai Sheng ❤️ Emmeline</strong><br><br>
+
+      You are officially invited to a date prepared by Kai Sheng.<br><br>
+
+      📅 <strong>Date:</strong> ${displayDate}<br>
+      ⏰ <strong>Time:</strong> ${displayTime}<br>
+      🍽️ <strong>Food:</strong> ${food}<br>
+      🎯 <strong>Activity:</strong> ${activity}<br><br>
+
+      <strong>Date Terms & Conditions:</strong><br>
+      1. Emmeline only needs to show up happy and comfortable.<br>
+      2. Kai Sheng will handle the planning, directions, photos, and emotional support.<br>
+      3. If Emmeline smiles, the date is automatically successful.<br>
+      4. If Emmeline gets tired, the date immediately becomes soft and gentle.<br>
+      5. If Emmeline acts cute, Kai Sheng automatically loses.<br><br>
+
+      From,<br>
+      A very excited Kai Sheng ❤️
+    `;
+
+    calculateCountdown(date);
+    goPage(11);
+  }
+
+
+  async function confirmDate() {
+    const date = document.getElementById("date").value || "Not selected";
+    const time = document.getElementById("time").value || "Not selected";
+    const customFood = document.getElementById("customFood").value.trim();
+
+    const food = selectedFood === "✨ Something Else"
+      ? (customFood || "Something Emmeline will tell Kai Sheng later ❤️")
+      : (selectedFood || "Whatever Emmeline wants ❤️");
+
+    const activity = selectedActivity || "Something sweet and not too tiring ❤️";
+
+    const message = `💌 DATE ACCEPTED 💌
+
+Emmeline accepted your invitation ❤️
+
+📅 Date: ${date}
+⏰ Time: ${time}
+🍽️ Food: ${food}
+🎯 Activity: ${activity}
+
+Mission accepted ❤️`;
+
+    if (BOT_TOKEN === "PASTE_YOUR_NEW_BOT_TOKEN_HERE") {
+      alert("Telegram token has not been pasted yet. The page will continue, but Kai Sheng will not receive Telegram notification.");
+      goPage(12);
+      return;
+    }
+
+    try {
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: message
+        })
+      });
+
+      goPage(12);
+    } catch (error) {
+      alert("The date is confirmed, but Telegram notification failed. Please check the Bot Token or internet connection.");
+      goPage(12);
+    }
+  }
+
+  function calculateCountdown(date) {
+    if (!date) {
+      document.getElementById("countdown").innerText =
+        "Countdown: waiting for Emmeline to choose the date ❤️";
+      return;
+    }
+
+    const today = new Date();
+    const target = new Date(date);
+    const diff = target - today;
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+    if (days > 0) {
+      document.getElementById("countdown").innerText =
+        `Only ${days} day(s) until Kai Sheng gets to see Emmeline ❤️`;
+    } else if (days === 0) {
+      document.getElementById("countdown").innerText =
+        "It is today! Kai Sheng is probably nervous and happy right now 😳";
+    } else {
+      document.getElementById("countdown").innerText =
+        "This date seems to be in the past, but Kai Sheng would still ask again ❤️";
+    }
+  }
+
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = Math.random() > 0.5 ? "❤️" : "💕";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 24 + 24 + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 4000);
+  }, 380);
+</script>
+
+</body>
+</html>
